@@ -1,8 +1,17 @@
 #!/bin/sh
 
+if [[ -f /run/secrets/staging-token/staging-token ]]; then
+  token_file=/run/secrets/staging-token/staging-token
+elif [[ -f /run/secrets/staging-token ]]; then
+  token_file=/run/secrets/staging-token
+else
+  echo "Can't find token file! Exiting..."
+  exit 1
+fi
+
 while true
 do
-	case "$(cat /run/secrets/payment_token)" in
+	case "$(cat $token_file)" in
 	staging)
 		echo "$(date '+%s') | OK | Authenticated in staging mode, waiting for transactions..."
 		;;
